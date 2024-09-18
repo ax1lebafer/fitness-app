@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
+import Header from "@/components/Header";
 
 const roboto = Roboto({
   subsets: ["cyrillic"],
@@ -19,7 +20,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru">
-      <body className={roboto.className}>{children}</body>
+      <body className={roboto.className}>
+        <div className="px-[140px]">
+          <Header />
+          {children}
+        </div>
+      </body>
     </html>
   );
 }
