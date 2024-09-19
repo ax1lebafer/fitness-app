@@ -6,13 +6,19 @@ export default function Header() {
     <header className="flex justify-between pt-[50px] pb-[60px] items-center">
       <div>
         <Link href="/">
-          <Image src="/img/logo.svg" alt="Логотип" width={220} height={35} />
+          <Image
+            src="/img/logo.svg"
+            alt="Логотип Fitness App"
+            width={220}
+            height={35}
+          />
+          <span className="sr-only">Логотип Fitness App</span>
         </Link>
         <p className="mt-[15px] opacity-50">
           Онлайн-тренировки для занятий дома
         </p>
       </div>
-      <button className="px-[28px] py-4 rounded-[46px] bg-[#BCEC30]">
+      <button className="px-[28px] py-4 rounded-[46px] bg-[#BCEC30] hover:bg-[#C6FF00] transition-colors duration-300 ease-linear">
         Войти
       </button>
     </header>
