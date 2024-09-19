@@ -1,7 +1,9 @@
+import Main from "@/components/Main";
+
 export default function Home() {
   return (
-    <div className="flex justify-center">
-      {/*<h1 className="text-2xl">Главная</h1>*/}
-    </div>
+    <Main />
+    // <div className="flex justify-center">
+    // </div>
   );
 }
