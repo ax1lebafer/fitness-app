@@ -18,10 +18,11 @@ export default function Header() {
           Онлайн-тренировки для занятий дома
         </p>
       </div>
-      <button className="px-[28px] py-4 rounded-[46px] bg-[#BCEC30] hover:bg-[#C6FF00] transition-colors duration-300 ease-linear">
-        {/* Войти */}
-        <Link href="./login">Войти</Link>
-      </button>
+      <Link href="./login">
+        <button className="px-[28px] py-4 rounded-[46px] bg-[#BCEC30] hover:bg-[#C6FF00] transition-colors duration-300 ease-linear">
+          Войти
+        </button>
+      </Link>
     </header>
   );
 }

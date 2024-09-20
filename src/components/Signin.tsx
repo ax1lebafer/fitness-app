@@ -7,7 +7,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 // import { useAppDispatch } from "@/store/store";
 // import { getRegistration } from "@/store/features/userSlice";
 
-export function SigninPage() {
+export default function Signin() {
   //   const dispatch = useAppDispatch();
     const router = useRouter();
 
@@ -77,9 +77,9 @@ export function SigninPage() {
   }, [formValues.login, formValues.password, formValues.confirmPassword]);
 
   return (
-    <div className="w-full min-h-full overflow-hidden">
-      <div className="max-w-full h-lvh my-0 mx-auto relative">
-        <div className="absolute z-2 left-[calc(50% - (366px / 2))] top-[calc(50% - (439px / 2))] opacity-100">
+    <div className="w-full min-h-full overflow-hidden opacity-75">
+      <div className="max-w-full h-lvh my-auto mx-auto relative">
+        <div className="absolute left-[calc(50%-(360px/2))] top-[calc(50%-(527px/2))] opacity-100">
           <form
             className="w-[360px] p-[40px] bg-[white] rounded-[30px] flex flex-col items-center pt-[43px] pr-[47px] pb-[47px] pl-[40px]"
             action="#"
@@ -124,7 +124,6 @@ export function SigninPage() {
               <Link href="#">Зарегистрироваться</Link>
             </button>
             <button className="w-[280px] h-[52px] bg-[#ffffff] rounded-[46px] border-[1px] border-[#000000] px-[26px] py-[16px] mb-[20px] flex flex-row tracking-tighter text-lg text-[#000000] items-center justify-center">
-              {/* <Link href="/signup">Зарегистрироваться</Link> */}
               <Link href="/login">Войти</Link>
             </button>
           </form>
