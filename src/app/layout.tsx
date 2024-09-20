@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <body className={roboto.className}>
-        <div className="mx-[140px]">
+        <div className="max-w-[1140px] mx-auto">
           <Header />
           {children}
         </div>
