@@ -1,3 +1,5 @@
+import ProfileInfo from "@/components/ProfileInfo";
+
 export default function Home() {
   return (
     <div className="flex justify-center">
