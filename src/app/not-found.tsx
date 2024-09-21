@@ -1,4 +1,4 @@
-import Link from "next/link";
+import ButtonLink from "@/components/ui/ButtonLink";
 
 export default function NotFound() {
   return (
@@ -9,12 +9,7 @@ export default function NotFound() {
         <br />
         Страницу, которую ты ищешь не найдена
       </p>
-      <Link
-        href="/"
-        className="mt-6 px-[28px] py-4 rounded-[46px] bg-[#BCEC30] hover:bg-[#C6FF00] transition-colors duration-300 ease-linear inline-block text-center"
-      >
-        Вернуться на главную
-      </Link>
+      <ButtonLink text={"Вернуться на главную"} href={"/"} />
     </div>
   );
 }
