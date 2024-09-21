@@ -1,4 +1,5 @@
 import Card from "@/components/Card";
+import ButtonLink from "@/components/ui/ButtonLink";
 
 export default function Main() {
   return (
@@ -22,9 +23,7 @@ export default function Main() {
         <Card />
       </div>
       <div className="flex items-center justify-center mb-10">
-        <button className="px-[28px] py-4 rounded-[46px] bg-[#BCEC30] hover:bg-[#C6FF00] transition-colors duration-300 ease-linear">
-          Наверх ↑
-        </button>
+        <ButtonLink text={"Наверх ↑"} />
       </div>
     </main>
   );
