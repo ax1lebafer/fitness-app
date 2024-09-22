@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
-import ReduxProvider from "@/store/ReduProvider";
+import ReduxProvider from "@/store/ReduxProvider";
 
 const roboto = Roboto({
   subsets: ["cyrillic"],
