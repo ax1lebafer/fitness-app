@@ -1,7 +1,16 @@
+"use client";
+
 import Card from "@/components/Card";
 import ButtonLink from "@/components/ui/ButtonLink";
 
 export default function Main() {
+  function scrollUp() {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
   return (
     <main>
       <div className="flex justify-between items-start mb-[50px]">
@@ -15,7 +24,7 @@ export default function Main() {
           <span className="absolute rotate-[35deg] bottom-[-25px] left-[40%] transform -translate-x-1/2 w-0 h-0 border-l-[10px] border-l-transparent border-r-[15px] border-r-transparent border-t-[35px] border-t-[#BCEC30]"></span>
         </div>
       </div>
-      <div className="flex gap-[30px] flex-wrap mb-10">
+      <div className="flex gap-10 flex-wrap mb-10">
         <Card />
         <Card />
         <Card />
@@ -23,7 +32,7 @@ export default function Main() {
         <Card />
       </div>
       <div className="flex items-center justify-center mb-10">
-        <ButtonLink text={"Наверх ↑"} />
+        <ButtonLink text={"Наверх ↑"} onClick={scrollUp} />
       </div>
     </main>
   );
