@@ -4,16 +4,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
-// import { useAppDispatch } from "@/store/store";
-// import { getUser } from "@/store/features/userSlice";
+import { useAppDispatch } from "@/store/store";
+import { getUser } from "@/store/features/userSlise";
+import { errorMessage } from "@/utils/ErrorMessage";
 
 export default function Login() {
-  // const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
   const router = useRouter();
 
-  const [formValues, setFormValues] = useState({ login: "", password: "" });
+  const [formValues, setFormValues] = useState({ email: "", password: "" });
 
-  const [error, setError] = useState("");
+  const [loginError, setLoginError] = useState("");
 
   const onInputChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -23,37 +24,39 @@ export default function Login() {
   const onLogin = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
-    if (!formValues.login || formValues.login.trim() === "") {
-      setError("Не введен логин");
+    if (!formValues.email || formValues.email.trim() === "") {
+      setLoginError("Не введена почта");
+      return;
+    }
+
+    const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!re.test(String(formValues.email).toLowerCase())) {
+      setLoginError("Некорректный email");
       return;
     }
 
     if (!formValues.password || formValues.password.trim() === "") {
-      setError("Не введен пароль");
+      setLoginError("Не введен пароль");
       return;
     } else if (formValues.password.trim().length < 6) {
-      setError("Пароль не должен быть короче 6 символов");
+      setLoginError("Пароль не должен быть короче 6 символов");
       return;
     }
 
-    // Пока не реализованы API сделаем заглушку
-    if (!error) {
+    try {
+      await dispatch(getUser(formValues)).unwrap();
+      setLoginError("");
       router.push("/");
-      setError("");
+    } catch (error: any) {
+      const errMessage = error.message.toLowerCase();
+      const userMessage = errorMessage(errMessage);
+      userMessage !== "" ? setLoginError(userMessage) : setLoginError(error.message);
     }
-
-    // try {
-    //   await dispatch(getUser(formValues)).unwrap();
-    //   setError("");
-    //   router.push("/");
-    // } catch (error: any) {
-    //   setError(error.message);
-    // }
   };
 
   useEffect(() => {
-    setError("");
-  }, [formValues.login, formValues.password]);
+    setLoginError("");
+  }, [formValues.email, formValues.password]);
 
   return (
     <div className="w-full min-h-full overflow-hidden opacity-75">
@@ -68,10 +71,11 @@ export default function Login() {
             </div>
             <input
               className="w-[280px] v-[52px] rounded-[8px] border-[1px] border-[#d0cece] px-[18px] py-[16px] mb-[10px] text-lg"
-              type="login"
-              name="login"
-              placeholder="Логин"
-              value={formValues.login}
+              type="email"
+              name="email"
+              placeholder="Почта"
+              pattern="^\S+@\S+\.\S+$"
+              value={formValues.email}
               onChange={onInputChange}
             />
             <input
@@ -82,9 +86,9 @@ export default function Login() {
               value={formValues.password}
               onChange={onInputChange}
             />
-            {error && (
+            {loginError && (
               <p className="mt-[10px] text-[#db0030] text-sm text-center font-normal leading-4">
-                {error}
+                {loginError}
               </p>
             )}
             <button

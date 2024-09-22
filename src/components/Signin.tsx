@@ -4,20 +4,21 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
-// import { useAppDispatch } from "@/store/store";
-// import { getRegistration } from "@/store/features/userSlice";
+import { useAppDispatch } from "@/store/store";
+import { getRegistration } from "@/store/features/userSlise";
+import { errorMessage } from "@/utils/ErrorMessage";
 
 export default function Signin() {
-  //   const dispatch = useAppDispatch();
-    const router = useRouter();
+  const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const [formValues, setFormValues] = useState({
-    login: "",
+    email: "",
     password: "",
     confirmPassword: "",
   });
 
-  const [error, setError] = useState<string>("");
+  const [signinError, setSigninError] = useState<string>("");
 
   const onInputChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -27,16 +28,22 @@ export default function Signin() {
   const onRegistration = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
-    if (!formValues.login || formValues.login.trim() === "") {
-      setError("Не введен логин");
+    if (!formValues.email || formValues.email.trim() === "") {
+      setSigninError("Не введена эл.почта");
+      return;
+    }
+
+    const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!re.test(String(formValues.email).toLowerCase())) {
+      setSigninError("Некорректный email");
       return;
     }
 
     if (!formValues.password || formValues.password.trim() === "") {
-      setError("Не введен пароль");
+      setSigninError("Не введен пароль");
       return;
     } else if (formValues.password.trim().length < 6) {
-      setError("Пароль не должен быть короче 6 символов");
+      setSigninError("Пароль не должен быть короче 6 символов");
       return;
     }
 
@@ -44,37 +51,34 @@ export default function Signin() {
       !formValues.confirmPassword ||
       formValues.confirmPassword.trim() === ""
     ) {
-      setError("Не введено подтверждение пароля");
+      setSigninError("Не введено подтверждение пароля");
       return;
     } else if (formValues.confirmPassword.trim().length < 6) {
-      setError("Пароль не должен быть короче 6 символов");
+      setSigninError("Пароль не должен быть короче 6 символов");
       return;
     }
 
     if (formValues.password !== formValues.confirmPassword) {
-      setError("Пароли не совпадают");
+      setSigninError("Пароли не совпадают");
       return;
     }
 
-
-    // Пока не реализованы API сделаем заглушку
-    if (!error) {
+    try {
+      await dispatch(getRegistration(formValues)).unwrap();
       router.push("/login");
-      setError("");
+      setSigninError("");
+    } catch (error: any) {
+      console.log("errMessage", error);
+      const errMessage = error.message.toLowerCase();
+      console.log("errMessage", errMessage);
+      const userMessage = errorMessage(errMessage);
+      userMessage !== "" ? setSigninError(userMessage) : setSigninError(error.message);
     }
-
-    // try {
-    //   await dispatch(getRegistration(formValues)).unwrap();
-    //   router.push("/login");
-    //   setError("");
-    // } catch (error: any) {
-    //   setError(error.message);
-    // }
   };
 
   useEffect(() => {
-    setError("");
-  }, [formValues.login, formValues.password, formValues.confirmPassword]);
+    setSigninError("");
+  }, [formValues.email, formValues.password, formValues.confirmPassword]);
 
   return (
     <div className="w-full min-h-full overflow-hidden opacity-75">
@@ -89,10 +93,11 @@ export default function Signin() {
             </div>
             <input
               className="w-[280px] v-[52px] rounded-[8px] border-[1px] border-[#d0cece] px-[18px] py-[16px] mb-[10px] text-lg"
-              type="login"
-              name="login"
-              placeholder="Логин"
-              value={formValues.login}
+              type="email"
+              name="email"
+              placeholder="Почта"
+              pattern="^\S+@\S+\.\S+$"
+              value={formValues.email}
               onChange={onInputChange}
             />
             <input
@@ -111,9 +116,9 @@ export default function Signin() {
               value={formValues.confirmPassword}
               onChange={onInputChange}
             />
-            {error && (
+            {signinError && (
               <p className="mt-[10px] text-[#db0030] text-sm text-center font-normal leading-4">
-                {error}
+                {signinError}
               </p>
             )}
             <button

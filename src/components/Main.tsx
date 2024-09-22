@@ -1,6 +1,13 @@
+"use client";
+
 import Card from "@/components/Card";
+// import { useAppSelector } from "@/store/store";
 
 export default function Main() {
+  // const { user } = useAppSelector((state) => state.user);
+  // console.log("Main", user);
+  // const mail = user?.email;
+
   return (
     <main>
       <div className="flex justify-between items-start mb-[50px]">
