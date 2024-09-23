@@ -5,61 +5,80 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useAppDispatch } from "@/store/store";
-import { getUser } from "@/store/features/userSlise";
+import { getRegistration } from "@/store/features/userSlice";
 import { errorMessage } from "@/utils/ErrorMessage";
 
-export default function Login() {
+export default function Signup() {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  const [formValues, setFormValues] = useState({ email: "", password: "" });
+  const [formValues, setFormValues] = useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
 
-  const [loginError, setLoginError] = useState("");
+  const [signupError, setSignupError] = useState<string>("");
 
   const onInputChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormValues({ ...formValues, [name]: value });
   };
 
-  const onLogin = async (event: React.MouseEvent<HTMLButtonElement>) => {
+  const onRegistration = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
     if (!formValues.email || formValues.email.trim() === "") {
-      setLoginError("Не введена почта");
+      setSignupError("Не введена эл.почта");
       return;
     }
 
     const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!re.test(String(formValues.email).toLowerCase())) {
-      setLoginError("Некорректный email");
+      setSignupError("Некорректный email");
       return;
     }
 
     if (!formValues.password || formValues.password.trim() === "") {
-      setLoginError("Не введен пароль");
+      setSignupError("Не введен пароль");
       return;
     } else if (formValues.password.trim().length < 6) {
-      setLoginError("Пароль не должен быть короче 6 символов");
+      setSignupError("Пароль не должен быть короче 6 символов");
+      return;
+    }
+
+    if (
+      !formValues.confirmPassword ||
+      formValues.confirmPassword.trim() === ""
+    ) {
+      setSignupError("Не введено подтверждение пароля");
+      return;
+    } else if (formValues.confirmPassword.trim().length < 6) {
+      setSignupError("Пароль не должен быть короче 6 символов");
+      return;
+    }
+
+    if (formValues.password !== formValues.confirmPassword) {
+      setSignupError("Пароли не совпадают");
       return;
     }
 
     try {
-      await dispatch(getUser(formValues)).unwrap();
-      setLoginError("");
-      router.push("/");
+      await dispatch(getRegistration(formValues)).unwrap();
+      router.push("/signin");
+      setSignupError("");
     } catch (error: any) {
+      console.log("errMessage", error);
       const errMessage = error.message.toLowerCase();
       console.log("errMessage", errMessage);
       const userMessage = errorMessage(errMessage);
-      userMessage !== ""
-        ? setLoginError(userMessage)
-        : "";
+      userMessage !== "" ? setSignupError(userMessage) : "";
     }
   };
 
   useEffect(() => {
-    setLoginError("");
-  }, [formValues.email, formValues.password]);
+    setSignupError("");
+  }, [formValues.email, formValues.password, formValues.confirmPassword]);
 
   return (
     <div className="w-full min-h-full overflow-hidden opacity-75">
@@ -69,7 +88,7 @@ export default function Login() {
             className="w-[360px] p-[40px] bg-[white] rounded-[30px] flex flex-col items-center pt-[43px] pr-[47px] pb-[47px] pl-[40px]"
             action="#"
           >
-            <div className="w-[220px] h-[35px]  mb-[48px]">
+            <div className="w-[220px] h-[35px] mb-[48px]">
               <Image src="/img/logo.svg" alt="logo" width={220} height={35} />
             </div>
             <input
@@ -82,27 +101,35 @@ export default function Login() {
               onChange={onInputChange}
             />
             <input
-              className="w-[280px] v-[52px] rounded-[8px] border-[1px] border-[#d0cece] px-[18px] py-[16px] text-lg"
+              className="w-[280px] v-[52px] rounded-[8px] border-[1px] border-[#d0cece] px-[18px] py-[16px] mb-[10px] text-lg"
               type="password"
               name="password"
               placeholder="Пароль"
               value={formValues.password}
               onChange={onInputChange}
             />
-            {loginError && (
+            <input
+              className="w-[280px] v-[52px] rounded-[8px] border-[1px] border-[#d0cece] px-[18px] py-[16px] text-lg"
+              type="password"
+              name="confirmPassword"
+              placeholder="Повторите пароль"
+              value={formValues.confirmPassword}
+              onChange={onInputChange}
+            />
+            {signupError && (
               <p className="mt-[10px] text-[#db0030] text-sm text-center font-normal leading-4">
-                {loginError}
+                {signupError}
               </p>
             )}
             <button
               className="w-[280px] h-[52px] bg-[#bcec30] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#ffffff] rounded-[46px] border-0 mt-[34px] px-[26px] py-[16px] mb-[10px] flex flex-row tracking-tighter text-[lg] text-[#000000] items-center justify-center"
-              onClick={onLogin}
+              onClick={onRegistration}
               type="submit"
             >
-              <Link href="#">Войти</Link>
+              <Link href="#">Зарегистрироваться</Link>
             </button>
             <button className="w-[280px] h-[52px] bg-[#ffffff] rounded-[46px] border-[1px] border-[#000000] px-[26px] py-[16px] mb-[20px] flex flex-row tracking-tighter text-lg text-[#000000] items-center justify-center">
-              <Link href="/signin">Зарегистрироваться</Link>
+              <Link href="/signin">Войти</Link>
             </button>
           </form>
         </div>

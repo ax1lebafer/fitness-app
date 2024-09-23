@@ -19,7 +19,7 @@ export default function Header() {
           Онлайн-тренировки для занятий дома
         </p>
       </div>
-      <ButtonLink text={"Войти"} href={"/login"} />
+      <ButtonLink text={"Войти"} href={"/signin"} />
     </header>
   );
 }

@@ -5,31 +5,27 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useAppDispatch } from "@/store/store";
-import { getRegistration } from "@/store/features/userSlise";
+import { getUser } from "@/store/features/userSlice";
 import { errorMessage } from "@/utils/ErrorMessage";
 
 export default function Signin() {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  const [formValues, setFormValues] = useState({
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
+  const [formValues, setFormValues] = useState({ email: "", password: "" });
 
-  const [signinError, setSigninError] = useState<string>("");
+  const [signinError, setSigninError] = useState("");
 
   const onInputChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormValues({ ...formValues, [name]: value });
   };
 
-  const onRegistration = async (event: React.MouseEvent<HTMLButtonElement>) => {
+  const onLogin = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
     if (!formValues.email || formValues.email.trim() === "") {
-      setSigninError("Не введена эл.почта");
+      setSigninError("Не введена почта");
       return;
     }
 
@@ -47,40 +43,21 @@ export default function Signin() {
       return;
     }
 
-    if (
-      !formValues.confirmPassword ||
-      formValues.confirmPassword.trim() === ""
-    ) {
-      setSigninError("Не введено подтверждение пароля");
-      return;
-    } else if (formValues.confirmPassword.trim().length < 6) {
-      setSigninError("Пароль не должен быть короче 6 символов");
-      return;
-    }
-
-    if (formValues.password !== formValues.confirmPassword) {
-      setSigninError("Пароли не совпадают");
-      return;
-    }
-
     try {
-      await dispatch(getRegistration(formValues)).unwrap();
-      router.push("/login");
+      await dispatch(getUser(formValues)).unwrap();
       setSigninError("");
+      router.push("/");
     } catch (error: any) {
-      console.log("errMessage", error);
       const errMessage = error.message.toLowerCase();
       console.log("errMessage", errMessage);
       const userMessage = errorMessage(errMessage);
-      userMessage !== ""
-        ? setSigninError(userMessage)
-        : "";
+      userMessage !== "" ? setSigninError(userMessage) : "";
     }
   };
 
   useEffect(() => {
     setSigninError("");
-  }, [formValues.email, formValues.password, formValues.confirmPassword]);
+  }, [formValues.email, formValues.password]);
 
   return (
     <div className="w-full min-h-full overflow-hidden opacity-75">
@@ -90,7 +67,7 @@ export default function Signin() {
             className="w-[360px] p-[40px] bg-[white] rounded-[30px] flex flex-col items-center pt-[43px] pr-[47px] pb-[47px] pl-[40px]"
             action="#"
           >
-            <div className="w-[220px] h-[35px] mb-[48px]">
+            <div className="w-[220px] h-[35px]  mb-[48px]">
               <Image src="/img/logo.svg" alt="logo" width={220} height={35} />
             </div>
             <input
@@ -103,19 +80,11 @@ export default function Signin() {
               onChange={onInputChange}
             />
             <input
-              className="w-[280px] v-[52px] rounded-[8px] border-[1px] border-[#d0cece] px-[18px] py-[16px] mb-[10px] text-lg"
+              className="w-[280px] v-[52px] rounded-[8px] border-[1px] border-[#d0cece] px-[18px] py-[16px] text-lg"
               type="password"
               name="password"
               placeholder="Пароль"
               value={formValues.password}
-              onChange={onInputChange}
-            />
-            <input
-              className="w-[280px] v-[52px] rounded-[8px] border-[1px] border-[#d0cece] px-[18px] py-[16px] text-lg"
-              type="password"
-              name="confirmPassword"
-              placeholder="Повторите пароль"
-              value={formValues.confirmPassword}
               onChange={onInputChange}
             />
             {signinError && (
@@ -125,13 +94,13 @@ export default function Signin() {
             )}
             <button
               className="w-[280px] h-[52px] bg-[#bcec30] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#ffffff] rounded-[46px] border-0 mt-[34px] px-[26px] py-[16px] mb-[10px] flex flex-row tracking-tighter text-[lg] text-[#000000] items-center justify-center"
-              onClick={onRegistration}
+              onClick={onLogin}
               type="submit"
             >
-              <Link href="#">Зарегистрироваться</Link>
+              <Link href="#">Войти</Link>
             </button>
             <button className="w-[280px] h-[52px] bg-[#ffffff] rounded-[46px] border-[1px] border-[#000000] px-[26px] py-[16px] mb-[20px] flex flex-row tracking-tighter text-lg text-[#000000] items-center justify-center">
-              <Link href="/login">Войти</Link>
+              <Link href="/signup">Зарегистрироваться</Link>
             </button>
           </form>
         </div>

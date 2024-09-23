@@ -1,7 +1,7 @@
-import { fetchRegistration, fetchUser }  from "@/api/userAuth";
-import { UserType } from "@/Types/user";
+import { fetchRegistration, fetchUser } from "@/api/userAuth";
+import { UserType } from "@/types/user";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { LoginType, SigninType } from "@/Types/sign";
+import { LoginType, SigninType } from "@/types/sign";
 
 export const getUser = createAsyncThunk(
   "user/getUser",

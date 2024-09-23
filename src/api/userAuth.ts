@@ -1,6 +1,9 @@
-import { LoginType, SigninType } from "@/Types/sign";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/app/lib/config";
+import { LoginType, SigninType } from "@/types/sign";
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
+import { auth } from "@/lib/config";
 
 export async function fetchUser({ email, password }: LoginType) {
   await signInWithEmailAndPassword(auth, email, password)
@@ -15,7 +18,7 @@ export async function fetchUser({ email, password }: LoginType) {
 }
 
 export async function fetchRegistration({ email, password }: SigninType) {
-    await createUserWithEmailAndPassword(auth, email, password)
+  await createUserWithEmailAndPassword(auth, email, password)
     .then((response) => {
       const user = response.user;
       console.log("user: ", user);

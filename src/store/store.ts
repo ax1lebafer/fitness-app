@@ -5,7 +5,7 @@ import {
   useSelector,
   useStore,
 } from "react-redux";
-import { userReducer } from "./features/userSlise";
+import { userReducer } from "./features/userSlice";
 
 export const makeStore = () => {
   return configureStore({

@@ -23,7 +23,7 @@ export default function RootLayout({
     <html lang="ru">
       <ReduxProvider>
         <body className={roboto.className}>
-          <div className="max-w-[1140px] mx-auto">
+          <div className="max-w-[1160px] mx-auto">
             <Header />
             {children}
           </div>
