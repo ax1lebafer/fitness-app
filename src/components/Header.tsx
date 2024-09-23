@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import ButtonLink from "@/components/ui/ButtonLink";
 
 export default function Header() {
   return (
@@ -18,11 +19,7 @@ export default function Header() {
           Онлайн-тренировки для занятий дома
         </p>
       </div>
-      <Link href="./login">
-        <button className="px-[28px] py-4 rounded-[46px] bg-[#BCEC30] hover:bg-[#C6FF00] transition-colors duration-300 ease-linear">
-          Войти
-        </button>
-      </Link>
+      <ButtonLink text={"Войти"} href={"/login"} />
     </header>
   );
 }
