@@ -49,10 +49,11 @@ export default function Login() {
       router.push("/");
     } catch (error: any) {
       const errMessage = error.message.toLowerCase();
+      console.log("errMessage", errMessage);
       const userMessage = errorMessage(errMessage);
       userMessage !== "" ? setLoginError(userMessage) : setLoginError(error.message);
-    }
   };
+}
 
   useEffect(() => {
     setLoginError("");

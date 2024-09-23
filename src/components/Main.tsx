@@ -1,12 +1,12 @@
 "use client";
 
 import Card from "@/components/Card";
-// import { useAppSelector } from "@/store/store";
+import { useAppSelector } from "@/store/store";
 
 export default function Main() {
-  // const { user } = useAppSelector((state) => state.user);
-  // console.log("Main", user);
-  // const mail = user?.email;
+  const { user } = useAppSelector((state) => state.user);
+  console.log("Main", user);
+  const mail = user?.email;
 
   return (
     <main>
@@ -16,7 +16,7 @@ export default function Main() {
         </h1>
         <div className="relative w-[250px] rounded-[5px] bg-[#BCEC30] py-4 px-5">
           <p className=" text-[26px] font-normal whitespace-nowrap">
-            Измени своё <br /> тело за полгода!
+            Измени своё <br /> тело за полгода! ${mail}
           </p>
           <span className="absolute rotate-[35deg] bottom-[-25px] left-[40%] transform -translate-x-1/2 w-0 h-0 border-l-[10px] border-l-transparent border-r-[15px] border-r-transparent border-t-[35px] border-t-[#BCEC30]"></span>
         </div>
