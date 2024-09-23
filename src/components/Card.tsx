@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import ProgressBar from "@/components/ProgressBar";
 
 export default function Card() {
   return (
@@ -54,6 +55,7 @@ export default function Card() {
             <p className="text-[16px]">Сложность</p>
           </div>
         </div>
+        <ProgressBar />
       </div>
     </div>
   );
