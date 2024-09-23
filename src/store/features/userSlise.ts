@@ -1,4 +1,4 @@
-import { fetchRegistration, fetchUser } from "@/api/userAuth";
+import { fetchRegistration, fetchUser }  from "@/api/userAuth";
 import { UserType } from "@/Types/user";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { LoginType, SigninType } from "@/Types/sign";
@@ -41,21 +41,6 @@ const userSlice = createSlice({
       state.user = action.payload;
     },
   },
-  // extraReducers: (builder) => {
-  //   builder
-  //     .addCase(getUser.fulfilled, (state, action) => {
-  //       state.user = action.payload;
-  //     })
-  //     .addCase(getUser.rejected, (state, action) => {
-  //       console.error("Error:", action.error.message);
-  //     })
-  //     .addCase(getRegistration.fulfilled, (state, action) => {
-  //       state.user = action.payload;
-  //     })
-  //     .addCase(getRegistration.rejected, (state, action) => {
-  //       console.error("Error:", action.error.message);
-  //     });
-  // },
 });
 
 export const { logout } = userSlice.actions;
