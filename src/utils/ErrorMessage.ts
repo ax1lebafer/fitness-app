@@ -10,6 +10,8 @@ export function errorMessage(errMessage: string) {
       result = "Введите корректный email"
   } else if (errMessage.includes("auth/invalid-credential")) {
       result = "Неверный email или пароль";
+  } else {
+    result = errMessage;
   }
   return result;
 }

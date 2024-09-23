@@ -72,7 +72,9 @@ export default function Signin() {
       const errMessage = error.message.toLowerCase();
       console.log("errMessage", errMessage);
       const userMessage = errorMessage(errMessage);
-      userMessage !== "" ? setSigninError(userMessage) : setSigninError(error.message);
+      userMessage !== ""
+        ? setSigninError(userMessage)
+        : "";
     }
   };
 

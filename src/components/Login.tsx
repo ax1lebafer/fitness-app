@@ -53,7 +53,7 @@ export default function Login() {
       const userMessage = errorMessage(errMessage);
       userMessage !== ""
         ? setLoginError(userMessage)
-        : setLoginError(error.message);
+        : "";
     }
   };
 
