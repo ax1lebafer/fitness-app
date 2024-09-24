@@ -1,7 +1,14 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import ProgressBar from "@/components/ProgressBar";
+import { usePathname } from "next/navigation";
 
 export default function Card() {
+  const pathname = usePathname();
+  const isProfilePage = pathname === "profile";
+
   return (
     <div className="w-[360px] bg-white rounded-[30px]">
       <div className="relative h-[325px]">
@@ -54,6 +61,7 @@ export default function Card() {
             <p className="text-[16px]">Сложность</p>
           </div>
         </div>
+        {isProfilePage && <ProgressBar />}
       </div>
     </div>
   );
