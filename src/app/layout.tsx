@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
+import ReduxProvider from "@/store/ReduxProvider";
 
 const roboto = Roboto({
   subsets: ["cyrillic"],
@@ -20,12 +21,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru">
-      <body className={roboto.className}>
-        <div className="max-w-[1160px] mx-auto">
-          <Header />
-          {children}
-        </div>
-      </body>
+      <ReduxProvider>
+        <body className={roboto.className}>
+          <div className="max-w-[1160px] mx-auto">
+            <Header />
+            {children}
+          </div>
+        </body>
+      </ReduxProvider>
     </html>
   );
 }
