@@ -3,7 +3,7 @@ import ProfileInfo from "@/components/ProfileInfo";
 
 export default function profile() {
   return (
-    <div className="box-border">
+    <main className="mb-[40px]">
       <h1 className="sm:mt-[0px] mt-[36px] sm:mb-[31px] mb-[19px] sm:text-[40px] text-[24px] font-bold">
         Профиль
       </h1>
@@ -16,6 +16,6 @@ export default function profile() {
       <Card />
       <Card />
       </div>
-    </div>
+    </main>
   );
 }

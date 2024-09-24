@@ -9,14 +9,13 @@ export default function ProfileInfo() {
           <Image
             src="/img/profile.png"
             alt="Фото профиля"
-            /* className="w-full h-full object-cover" */
             width={197}
             height={197}
           />
         </div>
         <div className="flex flex-col sm:gap-[20px] gap-[13px] sm:mt-0 mt-[22px] sm:ml-0 ml-[19px]">
           <div className="sm:text-[32px] text-[24px] font-bold">Сергей</div>
-          <div className="flex flex-col gap-[2px]">
+          <div className="flex flex-col gap-[10px]">
             <p className="text-[18px]">Логин: sergey.petrov96</p>
             <p className="text-[18px]">Пароль: ***********</p>
           </div>
