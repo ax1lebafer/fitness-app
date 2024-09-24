@@ -1,9 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
+import ButtonLink from "@/components/ui/ButtonLink";
 
 export default function Header() {
   return (
-    <header className="flex justify-between pt-[50px] pb-[60px] items-center">
+    <header className="flex justify-between pt-[30px] pb-[60px] items-center">
       <div>
         <Link href="/">
           <Image
@@ -18,9 +19,7 @@ export default function Header() {
           Онлайн-тренировки для занятий дома
         </p>
       </div>
-      <button className="px-[28px] py-4 rounded-[46px] bg-[#BCEC30] hover:bg-[#C6FF00] transition-colors duration-300 ease-linear">
-        Войти
-      </button>
+      <ButtonLink text={"Войти"} href={"/login"} />
     </header>
   );
 }
