@@ -1,12 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { useAppDispatch } from "@/store/store";
 import { getRegistration } from "@/store/features/userSlice";
 import { errorMessage } from "@/utils/ErrorMessage";
+import ButtonLink from "@/components/ui/ButtonLink";
 
 export default function SignIp() {
   const dispatch = useAppDispatch();
@@ -121,16 +121,16 @@ export default function SignIp() {
                 {signUpError}
               </p>
             )}
-            <button
-              className="w-[280px] h-[52px] bg-[#bcec30] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#ffffff] rounded-[46px] border-0 mt-[34px] px-[26px] py-[16px] mb-[10px] flex flex-row tracking-tighter text-[lg] text-[#000000] items-center justify-center"
+            <ButtonLink
+              text="Зарегистрироваться"
+              className="w-full mb-2.5"
               onClick={onRegistration}
-              type="submit"
-            >
-              <Link href="#">Зарегистрироваться</Link>
-            </button>
-            <button className="w-[280px] h-[52px] bg-[#ffffff] rounded-[46px] border-[1px] border-[#000000] px-[26px] py-[16px] mb-[20px] flex flex-row tracking-tighter text-lg text-[#000000] items-center justify-center">
-              <Link href="/signin">Войти</Link>
-            </button>
+            />
+            <ButtonLink
+              text="Войти"
+              className="mt-0 w-full bg-transparent border border-black hover:bg-[#F7F7F7] hover:text-black active:bg-[#E9ECED] active:text-black"
+              href="/signin"
+            />
           </form>
         </div>
       </div>
