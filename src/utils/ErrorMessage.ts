@@ -1,5 +1,5 @@
 export function errorMessage(errMessage: string) {
-  let result = "";
+  let result = errMessage;
   if (errMessage.includes("auth/email-already-in-use")) {
       result = "Данный email уже занят";
   } else if (errMessage.includes("auth/email-already-exists")) {
@@ -10,8 +10,6 @@ export function errorMessage(errMessage: string) {
       result = "Введите корректный email"
   } else if (errMessage.includes("auth/invalid-credential")) {
       result = "Неверный email или пароль";
-  } else {
-    result = errMessage;
-  }
+  } 
   return result;
 }

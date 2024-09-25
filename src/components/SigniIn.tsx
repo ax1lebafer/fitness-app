@@ -1,20 +1,21 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { useAppDispatch } from "@/store/store";
-import { getUser } from "@/store/features/userSlice";
+import { getUser, setIsEntering } from "@/store/features/userSlice";
 import { errorMessage } from "@/utils/ErrorMessage";
+import ButtonLink from "@/components/ui/ButtonLink";
+import { fetchUser } from "@/api/userAuth";
 
-export default function Signin() {
+export default function SignIn() {
   const dispatch = useAppDispatch();
   const router = useRouter();
-
+  // const { isEntering } = useAppSelector((state) => state.user);
   const [formValues, setFormValues] = useState({ email: "", password: "" });
 
-  const [signinError, setSigninError] = useState("");
+  const [signInError, setSignInError] = useState("");
 
   const onInputChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -25,38 +26,47 @@ export default function Signin() {
     event.preventDefault();
 
     if (!formValues.email || formValues.email.trim() === "") {
-      setSigninError("Не введена почта");
+      setSignInError("Не введена почта");
       return;
     }
 
     const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!re.test(String(formValues.email).toLowerCase())) {
-      setSigninError("Некорректный email");
+      setSignInError("Некорректный email");
       return;
     }
 
     if (!formValues.password || formValues.password.trim() === "") {
-      setSigninError("Не введен пароль");
+      setSignInError("Не введен пароль");
       return;
     } else if (formValues.password.trim().length < 6) {
-      setSigninError("Пароль не должен быть короче 6 символов");
+      setSignInError("Пароль не должен быть короче 6 символов");
       return;
     }
 
-    try {
-      await dispatch(getUser(formValues)).unwrap();
-      setSigninError("");
-      router.push("/");
-    } catch (error: any) {
-      const errMessage = error.message.toLowerCase();
-      console.log("errMessage", errMessage);
-      const userMessage = errorMessage(errMessage);
-      userMessage !== "" ? setSigninError(userMessage) : "";
-    }
+    await fetchUser(formValues)
+      .then((response) => {
+        dispatch(
+          getUser({
+            email: response.user.email,
+            id: response.user.uid,
+            token: response.user.refreshToken,
+          }),
+        );
+        // setIsLoginModalOpened(false);
+        dispatch(setIsEntering(true));
+        router.push("/");
+        console.log("SignIn.User.", response.user);
+      })
+      .catch((error) => {
+        const errMessage = error.message.toLowerCase();
+        const userMessage = errorMessage(errMessage);
+        userMessage !== "" ? setSignInError(userMessage) : "";
+      });
   };
 
   useEffect(() => {
-    setSigninError("");
+    setSignInError("");
   }, [formValues.email, formValues.password]);
 
   return (
@@ -74,6 +84,7 @@ export default function Signin() {
               className="w-[280px] v-[52px] rounded-[8px] border-[1px] border-[#d0cece] px-[18px] py-[16px] mb-[10px] text-lg"
               type="email"
               name="email"
+              required
               placeholder="Почта"
               pattern="^\S+@\S+\.\S+$"
               value={formValues.email}
@@ -83,25 +94,26 @@ export default function Signin() {
               className="w-[280px] v-[52px] rounded-[8px] border-[1px] border-[#d0cece] px-[18px] py-[16px] text-lg"
               type="password"
               name="password"
+              required
               placeholder="Пароль"
               value={formValues.password}
               onChange={onInputChange}
             />
-            {signinError && (
+            {signInError && (
               <p className="mt-[10px] text-[#db0030] text-sm text-center font-normal leading-4">
-                {signinError}
+                {signInError}
               </p>
             )}
-            <button
-              className="w-[280px] h-[52px] bg-[#bcec30] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#ffffff] rounded-[46px] border-0 mt-[34px] px-[26px] py-[16px] mb-[10px] flex flex-row tracking-tighter text-[lg] text-[#000000] items-center justify-center"
+            <ButtonLink
+              text="Войти"
+              className="w-full mb-2.5"
               onClick={onLogin}
-              type="submit"
-            >
-              <Link href="#">Войти</Link>
-            </button>
-            <button className="w-[280px] h-[52px] bg-[#ffffff] rounded-[46px] border-[1px] border-[#000000] px-[26px] py-[16px] mb-[20px] flex flex-row tracking-tighter text-lg text-[#000000] items-center justify-center">
-              <Link href="/signup">Зарегистрироваться</Link>
-            </button>
+            />
+            <ButtonLink
+              text="Зарегистрироваться"
+              className="mt-0 w-full bg-transparent border border-black hover:bg-[#F7F7F7] hover:text-black active:bg-[#E9ECED] active:text-black"
+              href="/signup"
+            />
           </form>
         </div>
       </div>
