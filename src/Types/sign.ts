@@ -8,3 +8,9 @@ export type SignUpType = {
     password: string;
     confirmPassword: string;
 }
+
+export type SignUpdateType = {
+    email: string;
+    curPassword: string;
+    newPassword: string;
+}

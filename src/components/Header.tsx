@@ -25,11 +25,10 @@ export default function Header() {
           Онлайн-тренировки для занятий дома
         </p>
       </div>
-      {/* {user.email === "" ? ( */}
       {!isEntering ? (
-        <ButtonLink text={"Войти"} href={"/signin"} />
+        <ButtonLink text={"Войти"} href={"/signIn"} />
       ) : (
-        <div className="w-auto h-[50px] flex flex-row gap-[15px]">
+        <div className="w-auto h-[50px] flex flex-row gap-[12px]">
           <div>
             <Image
               src="/img/avatar-small.svg"
@@ -39,6 +38,15 @@ export default function Header() {
             />
           </div>
           <div className="text-center text-2xl pt-[6px]">{user.email}</div>
+          <Link href="/profileEnter" className="w-[15px] h-[15px]">
+            <Image
+              className="mt-[16px]"
+              src="/img/icons/down_arrow.svg"
+              alt="arrow"
+              width={15}
+              height={15}
+            />
+          </Link>
         </div>
       )}
     </header>

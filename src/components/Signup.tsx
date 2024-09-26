@@ -137,7 +137,7 @@ export default function SignUp() {
             <ButtonLink
               text="Войти"
               className="mt-0 w-full bg-transparent border border-black hover:bg-[#F7F7F7] hover:text-black active:bg-[#E9ECED] active:text-black"
-              href="/signin"
+              href="/signIn"
             />
           </form>
         </div>
