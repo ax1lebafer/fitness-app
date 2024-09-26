@@ -1,14 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { useAppDispatch } from "@/store/store";
 import { getRegistration } from "@/store/features/userSlice";
 import { errorMessage } from "@/utils/ErrorMessage";
+import ButtonLink from "@/components/ui/ButtonLink";
+import { fetchRegistration } from "@/api/userAuth";
 
-export default function Signup() {
+export default function SignUp() {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -18,7 +19,7 @@ export default function Signup() {
     confirmPassword: "",
   });
 
-  const [signupError, setSignupError] = useState<string>("");
+  const [signUpError, setSignUpError] = useState<string>("");
 
   const onInputChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -29,21 +30,21 @@ export default function Signup() {
     event.preventDefault();
 
     if (!formValues.email || formValues.email.trim() === "") {
-      setSignupError("Не введена эл.почта");
+      setSignUpError("Не введена эл.почта");
       return;
     }
 
     const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!re.test(String(formValues.email).toLowerCase())) {
-      setSignupError("Некорректный email");
+      setSignUpError("Некорректный email");
       return;
     }
 
     if (!formValues.password || formValues.password.trim() === "") {
-      setSignupError("Не введен пароль");
+      setSignUpError("Не введен пароль");
       return;
     } else if (formValues.password.trim().length < 6) {
-      setSignupError("Пароль не должен быть короче 6 символов");
+      setSignUpError("Пароль не должен быть короче 6 символов");
       return;
     }
 
@@ -51,33 +52,40 @@ export default function Signup() {
       !formValues.confirmPassword ||
       formValues.confirmPassword.trim() === ""
     ) {
-      setSignupError("Не введено подтверждение пароля");
+      setSignUpError("Не введено подтверждение пароля");
       return;
     } else if (formValues.confirmPassword.trim().length < 6) {
-      setSignupError("Пароль не должен быть короче 6 символов");
+      setSignUpError("Пароль не должен быть короче 6 символов");
       return;
     }
 
     if (formValues.password !== formValues.confirmPassword) {
-      setSignupError("Пароли не совпадают");
+      setSignUpError("Пароли не совпадают");
       return;
     }
 
-    try {
-      await dispatch(getRegistration(formValues)).unwrap();
-      router.push("/signin");
-      setSignupError("");
-    } catch (error: any) {
-      console.log("errMessage", error);
-      const errMessage = error.message.toLowerCase();
-      console.log("errMessage", errMessage);
-      const userMessage = errorMessage(errMessage);
-      userMessage !== "" ? setSignupError(userMessage) : "";
-    }
+    await fetchRegistration(formValues)
+      .then((response) => {
+        dispatch(
+          getRegistration({
+            email: response.user.email,
+            id: response.user.uid,
+            token: response.user.refreshToken,
+          }),
+        );
+        // setIsLoginModalOpened(false);
+        router.push("/signin");
+        console.log("SignUp.User.", response.user);
+      })
+      .catch((error) => {
+        const errMessage = error.message.toLowerCase();
+        const userMessage = errorMessage(errMessage);
+        userMessage !== "" ? setSignUpError(userMessage) : "";
+      });
   };
 
   useEffect(() => {
-    setSignupError("");
+    setSignUpError("");
   }, [formValues.email, formValues.password, formValues.confirmPassword]);
 
   return (
@@ -116,21 +124,21 @@ export default function Signup() {
               value={formValues.confirmPassword}
               onChange={onInputChange}
             />
-            {signupError && (
+            {signUpError && (
               <p className="mt-[10px] text-[#db0030] text-sm text-center font-normal leading-4">
-                {signupError}
+                {signUpError}
               </p>
             )}
-            <button
-              className="w-[280px] h-[52px] bg-[#bcec30] hover:bg-[#C6FF00] active:bg-[#000000] active:text-[#ffffff] rounded-[46px] border-0 mt-[34px] px-[26px] py-[16px] mb-[10px] flex flex-row tracking-tighter text-[lg] text-[#000000] items-center justify-center"
+            <ButtonLink
+              text="Зарегистрироваться"
+              className="w-full mb-2.5"
               onClick={onRegistration}
-              type="submit"
-            >
-              <Link href="#">Зарегистрироваться</Link>
-            </button>
-            <button className="w-[280px] h-[52px] bg-[#ffffff] rounded-[46px] border-[1px] border-[#000000] px-[26px] py-[16px] mb-[20px] flex flex-row tracking-tighter text-lg text-[#000000] items-center justify-center">
-              <Link href="/signin">Войти</Link>
-            </button>
+            />
+            <ButtonLink
+              text="Войти"
+              className="mt-0 w-full bg-transparent border border-black hover:bg-[#F7F7F7] hover:text-black active:bg-[#E9ECED] active:text-black"
+              href="/signin"
+            />
           </form>
         </div>
       </div>
