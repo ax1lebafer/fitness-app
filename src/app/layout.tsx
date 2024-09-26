@@ -3,6 +3,7 @@ import { Roboto } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import ReduxProvider from "@/store/ReduxProvider";
+import React from "react";
 
 const roboto = Roboto({
   subsets: ["cyrillic"],
@@ -16,19 +17,22 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  auth,
 }: Readonly<{
   children: React.ReactNode;
+  auth: React.ReactNode;
 }>) {
   return (
     <html lang="ru">
-      <ReduxProvider>
-        <body className={roboto.className}>
+      <body className={roboto.className}>
+        <ReduxProvider>
           <div className="max-w-[1160px] mx-auto">
             <Header />
             {children}
+            {auth}
           </div>
-        </body>
-      </ReduxProvider>
+        </ReduxProvider>
+      </body>
     </html>
   );
 }

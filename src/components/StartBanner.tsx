@@ -15,7 +15,7 @@ export default function StartBanner() {
           <li>упражнения заряжают бодростью</li>
           <li>помогают противостоять стрессам</li>
         </ol>
-        <ButtonLink text="Войдите, чтобы добавить курс" href="/login" />
+        <ButtonLink text="Войдите, чтобы добавить курс" href="/signin" />
       </div>
       <div className="relative">
         <div className="absolute overflow-hidden w-[634px] h-[386px] top-[-386px] right-[6px]">
