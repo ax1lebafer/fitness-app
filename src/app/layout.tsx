@@ -21,14 +21,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru">
-      <ReduxProvider>
-        <body className={roboto.className}>
+      <body className={roboto.className}>
+        <ReduxProvider>
           <div className="max-w-[1160px] mx-auto">
             <Header />
             {children}
           </div>
-        </body>
-      </ReduxProvider>
+        </ReduxProvider>
+      </body>
     </html>
   );
 }
