@@ -54,3 +54,10 @@ progress::-moz-progress-bar {
     text-wrap: balance;
   }
 }
+
+nav ol li+li:before {
+  content: '/';
+  padding: 0 5px;
+  font-size: 32px;
+  text-decoration: none;
+}
